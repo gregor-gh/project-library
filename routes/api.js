@@ -28,9 +28,9 @@ module.exports = function (app) {
     }
   }
   
-  const del = async (res,_id) => {
+  const delAll = async (res) => {
     try {
-      await db.deleteBooks(_id)
+      await db.deleteBooks("ALL")
       return res.send("complete delete successful")
     } catch (error) {
       console.log(error)
@@ -38,25 +38,20 @@ module.exports = function (app) {
     }
   }
 
+  const del = async (res, _id) => {
+    try {
+      const returnMessage = await db.deleteBooks(_id)
+      return res.send(returnMessage)
+    } catch (error) {
+      console.log(error)
+      return res.send("no book exists")
+    }
+  }
+
   const put = async (res, _id, comment) => {
     try {
-      console.log(db.updateBook(_id, comment))
-      // // first select book
-      // const item = await db.selectBook(_id)
-
-      // // if returned array is zero then return error
-      // if(!item.length)
-      //   return res.send("no book exists") 
-
-      // // push comment into comment array
-      // const origItem = item[0]
-      // const updComm = [...origItem.comments, comment]
-      // const updItem = { comments: updComm}
-      // const finalItem = { ...origItem, ...updItem }
-
-      // const result = await db.updateBook(finalItem)
-      //res.json(result)
-
+      const returnedItem = await db.updateBook(_id, comment)
+      res.send(returnedItem)
     } catch (error) {
       console.log(error)
     }
@@ -81,9 +76,9 @@ module.exports = function (app) {
       insert(res, title)    
     })
     
-    .delete(function(req, res, next){
+    .delete(function(_req, res){
       //if successful response will be 'complete delete successful'
-      del(res,"ALL")
+      delAll(res)
     });
 
   app.route('/api/books/:id')
@@ -107,6 +102,7 @@ module.exports = function (app) {
     
     .delete(function(req, res){
       let bookid = req.params.id;
+      del(res, bookid)
       //if successful response will be 'delete successful'
     });
   

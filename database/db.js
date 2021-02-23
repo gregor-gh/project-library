@@ -56,13 +56,28 @@ const selectBook = async (_id) => {
 }
 
 const deleteBooks = async (_id) => {
-  // if id passed is "ALL" then select all books, loop throuigh deleting one-by-one
+  // if id passed is "ALL" then delete entire collection
   if(_id==="ALL") {
     await deleteDb();
     return
   } else {
-    const { resource: result } = await container.item(_id).delete();
-    return result;
+    // otherwise get the id using _id (using _ was fCC requirement, they expected this to be done with MongoDB)
+    const query = `select c.id, c.title from c where c._id='${_id}'`
+    const { resources: items } = await container.items
+      .query(query)
+      .fetchAll();
+    
+    // if returned array is zero then book id does not exist
+    if(!items.length)
+      return "no book exists"
+
+    // _id should be unique so assume el 0
+    const id = items[0].id  
+    const category = items[0].title
+    
+    // now delete using that id and partition category (cosmos won't let me delete it without it)
+    const { resource: result } = await container.item(id, category).delete();
+    return "delete successful";
   }
   
 }
@@ -94,9 +109,8 @@ const updateBook = async (_id, comment) => {
    .replace(item)
 
   // strip out uneeded fields // TODO need to finish filtering out fields as required
-  const { id, _rid, _self, _etag, _attachments, _ts, ...returnItem } = updatedItem;
-  console.log(updatedItem)
-  return items
+  const { id, _rid, _self, _etag, _attachments, _ts, commentcount, ...returnItem } = updatedItem;
+  return returnItem
 
   // 
 
