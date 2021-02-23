@@ -9,10 +9,7 @@ module.exports = function (app) {
   const select = async (res, _id) => {
     try {
       const items = await db.selectBook(_id)
-      if(items.length)
-        return res.json(items)
-      else
-        return res.send("no book exists")
+      res.send(items)
     } catch (error) {
       console.log(error)
     }
@@ -94,7 +91,7 @@ module.exports = function (app) {
 
       // return early if no comment
       if(!comment)
-        return res.send("missing required field")
+        return res.send("missing required field comment")
 
       //json res format same as .get
       put(res,bookid,comment)

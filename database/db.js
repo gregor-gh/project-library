@@ -40,19 +40,31 @@ const insertBook = async (title) => {
 
 const selectBook = async (_id) => {
 
-  let query = `select c._id, c.title, c.commentcount from c`
+  let query;
 
+  // if id is specified then return comments
   if(_id) {
     query=`select c._id, c.title, c.comments from c where c._id='${_id}'`
   } else {
     query=`select c._id, c.title, c.commentcount from c`
   }
 
+  // fetch array of reuslts
   const { resources: items } = await container.items
   .query(query)
   .fetchAll();
 
-  return items;
+  // if array has no values then no books found
+  if(!items.length) {
+    return "no book exists"
+  }
+
+  // if id is specified then should only be one result, return that single object instead of array
+  if(_id) {
+    return items[0]
+  } else {
+    return items
+  }
 }
 
 const deleteBooks = async (_id) => {
