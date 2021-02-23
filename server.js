@@ -9,6 +9,17 @@ const apiRoutes         = require('./routes/api.js');
 const fccTestingRoutes  = require('./routes/fcctesting.js');
 const runner            = require('./test-runner');
 
+// ensure database exists when server starts
+const db = require("./database/db")
+const create = async () => {
+  try {
+    await db.createDb();
+  } catch (error) {
+    console.log(error)
+  }
+}
+create();
+
 const app = express();
 
 app.use('/public', express.static(process.cwd() + '/public'));

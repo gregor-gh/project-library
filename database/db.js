@@ -21,7 +21,6 @@ const deleteDb = async() => {
 }
 
 const insertBook = async (title) => {
-  await createDb()
   // define book to create
   const book = {
     _id: uuidv4(), // fCC tests expect the id to be _id, whereas CosmosDb only allows id, so creating my own
@@ -71,6 +70,7 @@ const deleteBooks = async (_id) => {
   // if id passed is "ALL" then delete entire collection
   if(_id==="ALL") {
     await deleteDb();
+    await createDb();
     return
   } else {
     // otherwise get the id using _id (using _ was fCC requirement, they expected this to be done with MongoDB)
