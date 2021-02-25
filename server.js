@@ -3,6 +3,7 @@
 const express     = require('express');
 const bodyParser  = require('body-parser');
 const cors        = require('cors');
+const path = require("path")
 require('dotenv').config();
 
 const apiRoutes         = require('./routes/api.js');
@@ -23,6 +24,16 @@ create();
 const app = express();
 
 app.use('/public', express.static(process.cwd() + '/public'));
+
+// point to react build folder
+app.use(express.static(path.join(__dirname,'client', 'build')));
+
+// redirect to build folder for azure deployment as Azure errors when running "npm install" for create-react-apps
+if(process.env.NODE_ENV === 'production') {
+  app.get('/*', function (req, res) {
+   	res.sendFile(path.join(__dirname, 'client', 'build', 'index.html'));
+  });
+}
 
 app.use(cors({origin: '*'})); //USED FOR FCC TESTING PURPOSES ONLY!
 

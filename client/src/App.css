@@ -1,3 +1,73 @@
+@import url('https://fonts.googleapis.com/css2?family=Shippori+Mincho+B1:wght@400;600;700&display=swap');
+
 body {
   padding: 50px;
+  font-family: 'Shippori Mincho B1', serif;
+}
+
+.app {
+  padding: 50px;
+  box-shadow: 10px 10px 8px 10px #888888;
+}
+
+.book-list {
+  padding: 20px 0px;
+
+}
+
+#add-book-button {
+  width:100px;
+}
+
+.add-comment {
+  padding: 3px;
+  margin: 0px 0px 0px 5px;
+}
+
+.book-item {
+  display:grid;
+  grid-template-columns: 1fr auto auto;
+  border-radius: 10px;
+  padding:5px;
+  min-width:300px;
+  max-width: 500px;
+  background-color: rgb(243, 243, 243);
+  margin: 10px 0px;
+  font-size: 13px;
+}
+
+.book-element {
+  margin: 0px 5px;
+}
+
+.book-comments {
+  cursor: pointer;
+  color:blue;
+  text-decoration: underline;
+  align-self: flex-end;
+}
+
+.book-delete {
+  align-self: flex-end;
+  color:red;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.comment {
+  padding: 3px;
+  margin: 0px 0px 0px 5px;
+  font-style: italic;
+}
+
+.button {
+  border-radius: 10px;
+  background-color: rgb(214, 214, 255);
+  font-weight: bold;
+}
+
+.api-button {
+  height:40px;
+  width:60px
+
 }

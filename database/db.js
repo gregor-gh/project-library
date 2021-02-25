@@ -45,7 +45,7 @@ const selectBook = async (_id) => {
   if(_id) {
     query=`select c._id, c.title, c.comments from c where c._id='${_id}'`
   } else {
-    query=`select c._id, c.title, c.commentcount from c`
+    query=`select c._id, c.title, c.commentcount from c order by c.title`
   }
 
   // fetch array of reuslts
