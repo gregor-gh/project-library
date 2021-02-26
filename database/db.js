@@ -120,7 +120,7 @@ const updateBook = async (_id, comment) => {
    .item(item.id)
    .replace(item)
 
-  // strip out uneeded fields // TODO need to finish filtering out fields as required
+  // strip out uneeded fields 
   const { id, _rid, _self, _etag, _attachments, _ts, commentcount, ...returnItem } = updatedItem;
   return returnItem
 

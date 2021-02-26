@@ -8,6 +8,7 @@ body {
 .app {
   padding: 50px;
   box-shadow: 10px 10px 8px 10px #888888;
+  max-width: 550px;
 }
 
 .book-list {
@@ -70,4 +71,23 @@ body {
   height:40px;
   width:60px
 
+}
+
+#api-text {
+  display: block;
+}
+
+@media (max-width:500px) {
+  .app{
+    padding:10px;
+  }
+
+  body {
+    padding:10px;
+  }
+
+  .book-item {
+    min-width:max-content;
+  }
+ 
 }
