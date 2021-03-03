@@ -25,6 +25,7 @@ const insertBook = async (title) => {
   const book = {
     _id: uuidv4(), // fCC tests expect the id to be _id, whereas CosmosDb only allows id, so creating my own
     title: title,
+    project: "Library", // Added this in so i can save money on CosmosDB
     commentcount: 0,
     comments: []
   }
@@ -32,7 +33,7 @@ const insertBook = async (title) => {
   // create in azure and return the created item
   const { resource: createdItem } = await container.items.create(book)
 
-  const { id, _rid, _self, _etag, _attachments, _ts, ...returnItem} = createdItem
+  const { id, project, _rid, _self, _etag, _attachments, _ts, ...returnItem} = createdItem
   return returnItem 
 }
 
@@ -43,9 +44,9 @@ const selectBook = async (_id) => {
 
   // if id is specified then return comments
   if(_id) {
-    query=`select c._id, c.title, c.comments from c where c._id='${_id}'`
+    query=`select c._id, c.title, c.comments from c where c._id='${_id}' and c.project='Library'`
   } else {
-    query=`select c._id, c.title, c.commentcount from c order by c.title`
+    query =`select c._id, c.title, c.commentcount from c where c.project='Library' order by c.title`
   }
 
   // fetch array of reuslts
@@ -85,10 +86,9 @@ const deleteBooks = async (_id) => {
 
     // _id should be unique so assume el 0
     const id = items[0].id  
-    const category = items[0].title
     
     // now delete using that id and partition category (cosmos won't let me delete it without it)
-    const { resource: result } = await container.item(id, category).delete();
+    const { resource: result } = await container.item(id, "Library").delete();
     return "delete successful";
   }
   
